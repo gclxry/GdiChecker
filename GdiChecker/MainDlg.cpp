@@ -7,6 +7,8 @@
 
 #include "aboutdlg.h"
 #include "MainDlg.h"
+#include "Util.h"
+#include "CGDI.h"
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
 {
@@ -39,6 +41,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	UIAddChildWindowContainer(m_hWnd);
 
   IniListCtrl();
+  UpdateListCtrl();
 
 	return TRUE;
 }
@@ -109,6 +112,43 @@ void CMainDlg::IniListCtrl()
   m_process.InsertColumn(10, _T("pen"), LVCFMT_LEFT, 50);
   m_process.InsertColumn(11, _T("extPen"), LVCFMT_LEFT, 60);
   m_process.InsertColumn(12, _T("other"), LVCFMT_LEFT, 50);
+}
 
+void CMainDlg::UpdateListCtrl()
+{
+  vector<PROCESS_INFO> vPi = GetProcessInfo();
+  m_process.DeleteAllItems();
 
+  for (vector<PROCESS_INFO>::iterator iter = vPi.begin(); iter != vPi.end(); ++iter)
+  {
+    CGDI gdi;
+    gdi.SetPID(iter->pid);
+    gdi.GetProcessGDIInfo();
+    vector<GDI_INFO> gi = gdi.GetGDI();
+
+    if (0 == gdi.GetGDINumber())
+    {
+      continue;
+    }
+
+    int nRow = m_process.InsertItem(m_process.GetItemCount(), iter->name);
+    m_process.SetItemText(nRow, 1, I2S(iter->pid));
+    m_process.SetItemText(nRow, 2, I2S(gdi.GetGDINumber()));
+    m_process.SetItemText(nRow, 3, I2S(gi.size()));
+    m_process.SetItemText(nRow, 4, I2S(GetGDITypeCount(gi, OBJ_DC)));
+    m_process.SetItemText(nRow, 5, I2S(GetGDITypeCount(gi, OBJ_REGION)));
+    m_process.SetItemText(nRow, 6, I2S(GetGDITypeCount(gi, OBJ_BITMAP)));
+    m_process.SetItemText(nRow, 7, I2S(GetGDITypeCount(gi, OBJ_PAL)));
+    m_process.SetItemText(nRow, 8, I2S(GetGDITypeCount(gi, OBJ_FONT)));
+    m_process.SetItemText(nRow, 9, I2S(GetGDITypeCount(gi, OBJ_BRUSH)));
+    m_process.SetItemText(nRow, 10, I2S(GetGDITypeCount(gi, OBJ_PEN)));
+    m_process.SetItemText(nRow, 11, I2S(GetGDITypeCount(gi, OBJ_EXTPEN)));
+    m_process.SetItemText(nRow, 12, I2S(GetGDITypeCount(gi, 0)));
+  }
+}
+
+LRESULT CMainDlg::OnRefresh(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+  UpdateListCtrl();
+  return 0;
 }
