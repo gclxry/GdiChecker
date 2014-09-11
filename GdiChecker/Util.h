@@ -18,3 +18,4 @@ BOOL IsWow64ProcessEx(int nPid);
 void CreateProcessWithCmd(CString sProcesName, CString sCmd);
 void IniCurrentDirectory();
 BOOL CreatePath(LPCTSTR pszPath);
+CString GetTempPath();

@@ -116,13 +116,20 @@ void CreateProcessWithCmd(CString sProcesName, CString sCmd)
 
 void IniCurrentDirectory()
 {
+
+  CString temp_path = GetTempPath();
+  CreatePath(temp_path);
+  SetCurrentDirectory(temp_path);
+}
+
+CString GetTempPath()
+{
   TCHAR szPath[MAX_PATH];
   CString temp_path;
   GetTempPath(MAX_PATH, szPath);
   temp_path= szPath;
   temp_path += TEXT("PJJ_GdiChecker");
-  CreatePath(temp_path);
-  SetCurrentDirectory(temp_path);
+  return temp_path;
 }
 
 BOOL CreatePath(LPCTSTR pszPath)

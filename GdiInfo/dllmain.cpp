@@ -6,7 +6,6 @@
 unsigned _stdcall ThreadProc(void* param)
 {
   CMessageLoop theLoop;
-  //_Module.AddMessageLoop(&theLoop);
 
   CMainDlg dlgMain;
 
@@ -19,11 +18,7 @@ unsigned _stdcall ThreadProc(void* param)
   dlgMain.ShowWindow(SW_SHOW);
 
   int nRet = theLoop.Run();
-
-  //_Module.RemoveMessageLoop();
   return nRet;
-  //MessageBox(NULL, L"a", L"b", 0);
-  return 0;
 }
 
 HANDLE handle = NULL;

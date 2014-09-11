@@ -38,7 +38,6 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 	UIAddChildWindowContainer(m_hWnd);
 
-  MessageBox(L"OnInitDialog");
 	return TRUE;
 }
 
