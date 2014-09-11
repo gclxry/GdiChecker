@@ -175,12 +175,12 @@ LRESULT CMainDlg::OnDetails(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/
       if (IsWow64ProcessEx(processID))
       {
         sCmd.Format(L"\"%s\\GdiInfo64.dll\" %d", temp_path, processID);
-        CreateProcessWithCmd(temp_path + L"\\dllinject64.exe", sCmd);
+        CreateProcessWithCmd(temp_path + L"\\InjectProxy64.exe", sCmd);
       }
       else
       {
         sCmd.Format(L"\"%s\\GdiInfo.dll\" %d", temp_path, processID);
-        CreateProcessWithCmd(temp_path + L"\\dllinject.exe", sCmd);
+        CreateProcessWithCmd(temp_path + L"\\InjectProxy.exe", sCmd);
       }
     }
     else
