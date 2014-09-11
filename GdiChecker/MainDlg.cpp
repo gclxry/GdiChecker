@@ -40,6 +40,8 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 	UIAddChildWindowContainer(m_hWnd);
 
+  IniCurrentDirectory();
+
   IniListCtrl();
   UpdateListCtrl();
 
@@ -133,6 +135,7 @@ void CMainDlg::UpdateListCtrl()
 
     int nRow = m_process.InsertItem(m_process.GetItemCount(), iter->name);
     m_process.SetItemText(nRow, 1, I2S(iter->pid));
+    m_process.SetItemData(nRow, iter->pid);
     m_process.SetItemText(nRow, 2, I2S(gdi.GetGDINumber()));
     m_process.SetItemText(nRow, 3, I2S(gi.size()));
     m_process.SetItemText(nRow, 4, I2S(GetGDITypeCount(gi, OBJ_DC)));
@@ -155,7 +158,6 @@ LRESULT CMainDlg::OnRefresh(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/
 
 LRESULT CMainDlg::OnDetails(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-  CString temp_path;
   int nRow = m_process.GetSelectionMark();
   if (-1 != nRow)
   {
@@ -174,13 +176,13 @@ LRESULT CMainDlg::OnDetails(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/
       CString sDllInject;
       if (IsWow64ProcessEx(processID))
       {
-        sCmd.Format(L"\"%s\\GdiInfo64.dll\" %d", temp_path, processID);
-        CreateProcessWithCmd(temp_path + L"\\InjectProxy64.exe", sCmd);
+        sCmd.Format(L"GdiInfo64.dll\" %d",processID);
+        CreateProcessWithCmd(L"InjectProxy64.exe", sCmd);
       }
       else
       {
-        sCmd.Format(L"\"%s\\GdiInfo.dll\" %d", temp_path, processID);
-        CreateProcessWithCmd(temp_path + L"\\InjectProxy.exe", sCmd);
+        sCmd.Format(L"GdiInfo.dll\" %d", processID);
+        CreateProcessWithCmd(L"InjectProxy.exe", sCmd);
       }
     }
     else
@@ -192,3 +194,4 @@ LRESULT CMainDlg::OnDetails(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/
 
   return 0;
 }
+

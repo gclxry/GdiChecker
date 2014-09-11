@@ -83,10 +83,11 @@ void NotifyGdiChecker()
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-  if (3 == argc)
+  //if (3 == argc)
   {
     EnableDebugPrivilege();
-    if (InjectProcess(argv[1], _wtoi(argv[2])))
+    //if (InjectProcess(argv[1], _wtoi(argv[2])))
+    if (InjectProcess(L"GdiInfo.dll", 8820))
     {
       _tprintf(_T("inject sucessed!"));
       NotifyGdiChecker();
@@ -98,10 +99,10 @@ int _tmain(int argc, _TCHAR* argv[])
       _tprintf(_T("inject failed %d!"), dwError);
     }
   }
-  else
-  {
-    printf("command line error,please input like this:\n\"dll path\" pid\n");
-  }
+  //else
+  //{
+  //  printf("command line error,please input like this:\n\"dll path\" pid\n");
+  //}
 	return 0;
 }
 

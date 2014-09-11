@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GdiChecker", "GdiChecker\Gd
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InjectProxy", "InjectProxy\InjectProxy.vcxproj", "{E4BBDD7E-7DBE-4E6C-9AA5-DC0E6A974326}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GdiInfo", "GdiInfo\GdiInfo.vcxproj", "{816E1E57-46C8-49CC-8ECF-70614EA48A55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -29,6 +31,12 @@ Global
 		{E4BBDD7E-7DBE-4E6C-9AA5-DC0E6A974326}.Release|Win32.Build.0 = Release|Win32
 		{E4BBDD7E-7DBE-4E6C-9AA5-DC0E6A974326}.Release|x64.ActiveCfg = Release|x64
 		{E4BBDD7E-7DBE-4E6C-9AA5-DC0E6A974326}.Release|x64.Build.0 = Release|x64
+		{816E1E57-46C8-49CC-8ECF-70614EA48A55}.Debug|Win32.ActiveCfg = Debug|Win32
+		{816E1E57-46C8-49CC-8ECF-70614EA48A55}.Debug|Win32.Build.0 = Debug|Win32
+		{816E1E57-46C8-49CC-8ECF-70614EA48A55}.Debug|x64.ActiveCfg = Debug|Win32
+		{816E1E57-46C8-49CC-8ECF-70614EA48A55}.Release|Win32.ActiveCfg = Release|Win32
+		{816E1E57-46C8-49CC-8ECF-70614EA48A55}.Release|Win32.Build.0 = Release|Win32
+		{816E1E57-46C8-49CC-8ECF-70614EA48A55}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

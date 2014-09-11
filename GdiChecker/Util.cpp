@@ -113,3 +113,30 @@ void CreateProcessWithCmd(CString sProcesName, CString sCmd)
   ShExecInfo.hInstApp = NULL;
   ShellExecuteEx(&ShExecInfo);
 }
+
+void IniCurrentDirectory()
+{
+  TCHAR szPath[MAX_PATH];
+  CString temp_path;
+  GetTempPath(MAX_PATH, szPath);
+  temp_path= szPath;
+  temp_path += TEXT("PJJ_GdiChecker");
+  CreatePath(temp_path);
+  SetCurrentDirectory(temp_path);
+}
+
+BOOL CreatePath(LPCTSTR pszPath)
+{
+  CString path(pszPath);
+  PathRemoveBackslash(path.GetBuffer(path.GetLength()));
+  path.ReleaseBuffer();
+
+  if (!PathFileExists(path))
+  {
+    if (!CreateDirectory(path, NULL))
+    {
+      return FALSE;
+    }
+  }
+  return TRUE;
+}
