@@ -26,7 +26,9 @@ LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
 
 IDR_MENU_MAIN MENU
 BEGIN
-    MENUITEM "文件",                          0
+    MENUITEM "file",                        ID_32775
+    MENUITEM "refresh",                     ID_REFRESH
+    MENUITEM "details",                     ID_DETAILS
 END
 
 #endif    // 中文(简体，中国) resources
@@ -96,6 +98,7 @@ CAPTION "GdiChecker"
 MENU IDR_MENU_MAIN
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
+    CONTROL         "",IDC_LIST_PROCESS,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,7,487,231
 END
 
 
