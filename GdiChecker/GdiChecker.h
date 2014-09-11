@@ -1,0 +1,1 @@
+// GdiChecker.h
