@@ -14,3 +14,5 @@ struct PROCESS_INFO
 vector<PROCESS_INFO> GetProcessInfo();
 CString I2S(int n);
 int GetGDITypeCount(vector<GDI_INFO>& gi, int nType);
+BOOL IsWow64ProcessEx(int nPid);
+void CreateProcessWithCmd(CString sProcesName, CString sCmd);

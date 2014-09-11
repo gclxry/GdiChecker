@@ -152,3 +152,43 @@ LRESULT CMainDlg::OnRefresh(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/
   UpdateListCtrl();
   return 0;
 }
+
+LRESULT CMainDlg::OnDetails(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+  CString temp_path;
+  int nRow = m_process.GetSelectionMark();
+  if (-1 != nRow)
+  {
+    CString windows_name;
+    CString process_name;
+    CString process_id;
+
+    m_process.GetItemText(nRow, 0, process_name);
+    m_process.GetItemText(nRow, 1, process_id);
+    windows_name.Format(_T("%s_%s_gdi info"), process_name, process_id);
+    HWND find_hwnd = ::FindWindow(NULL, windows_name);
+    if (NULL == find_hwnd)
+    {
+      DWORD processID = m_process.GetItemData(nRow);
+      CString sCmd;
+      CString sDllInject;
+      if (IsWow64ProcessEx(processID))
+      {
+        sCmd.Format(L"\"%s\\GdiInfo64.dll\" %d", temp_path, processID);
+        CreateProcessWithCmd(temp_path + L"\\dllinject64.exe", sCmd);
+      }
+      else
+      {
+        sCmd.Format(L"\"%s\\GdiInfo.dll\" %d", temp_path, processID);
+        CreateProcessWithCmd(temp_path + L"\\dllinject.exe", sCmd);
+      }
+    }
+    else
+    {
+      // »½ÐÑ´°¿Ú
+      ::PostMessage(find_hwnd, WM_INJECT, (WPARAM)m_hWnd, 1);
+    }
+  }
+
+  return 0;
+}

@@ -68,3 +68,48 @@ int GetGDITypeCount(vector<GDI_INFO>& gi, int nType)
   }
   return nCount;
 }
+
+
+BOOL IsWow64ProcessEx(int nPid)  
+{  
+  HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, nPid);
+
+  // 判断ntdll中的导出函数,可知是否是64位OS  
+  HMODULE hMod=GetModuleHandle(_T("ntdll.dll"));  
+  FARPROC x64fun=::GetProcAddress(hMod,"ZwWow64ReadVirtualMemory64");  
+  if(!x64fun)
+  {
+    return FALSE; 
+  } 
+  // 利用IsWow64Process判断是否是x64进程
+  typedef BOOL(WINAPI *pfnIsWow64Process)(HANDLE,PBOOL);  
+  pfnIsWow64Process fnIsWow64Process=NULL;  
+  hMod=GetModuleHandle(_T("kernel32.dll"));  
+  fnIsWow64Process=(pfnIsWow64Process)GetProcAddress(hMod,"IsWow64Process");
+  //如果没有导出则判定为32位
+  if(!fnIsWow64Process)
+  {
+    return FALSE;
+  }          
+  BOOL bX64 = FALSE;  
+  if(!fnIsWow64Process(hProcess,&bX64))
+  {
+    return FALSE;  
+  }
+  return !bX64;  
+}
+
+void CreateProcessWithCmd(CString sProcesName, CString sCmd)
+{
+  SHELLEXECUTEINFO ShExecInfo = {0};
+  ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+  ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+  ShExecInfo.hwnd = NULL;
+  ShExecInfo.lpVerb = NULL;
+  ShExecInfo.lpFile = sProcesName;
+  ShExecInfo.lpParameters = sCmd;
+  ShExecInfo.lpDirectory = NULL;
+  ShExecInfo.nShow = SW_HIDE;
+  ShExecInfo.hInstApp = NULL;
+  ShellExecuteEx(&ShExecInfo);
+}
