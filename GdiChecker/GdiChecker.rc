@@ -13,6 +13,27 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_MAIN MENU
+BEGIN
+    MENUITEM "文件",                          0
+END
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
 // 英语(美国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
@@ -69,14 +90,12 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,7,7,115,88
 END
 
-IDD_MAINDLG DIALOG 0, 0, 187, 98
-STYLE DS_SETFONT | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU
+IDD_MAINDLG DIALOGEX 0, 0, 501, 245
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU
 CAPTION "GdiChecker"
-FONT 8, "MS Shell Dlg"
+MENU IDR_MENU_MAIN
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,130,7,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,130,24,50,14
-    PUSHBUTTON      "&About",ID_APP_ABOUT,130,77,50,14
 END
 
 
@@ -99,9 +118,9 @@ BEGIN
     IDD_MAINDLG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 180
+        RIGHTMARGIN, 494
         TOPMARGIN, 7
-        BOTTOMMARGIN, 91
+        BOTTOMMARGIN, 238
     END
 END
 #endif    // APSTUDIO_INVOKED
