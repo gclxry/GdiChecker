@@ -6,6 +6,9 @@
 #include "resource.h"
 
 #include "MainDlg.h"
+#include "Util.h"
+#include "CGDI.h"
+
 //CAppModule _Module;
 
 BOOL CMainDlg::PreTranslateMessage(MSG* pMsg)
@@ -38,6 +41,9 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
 	UIAddChildWindowContainer(m_hWnd);
 
+  IniWindowsText();
+  IniList();
+
 	return TRUE;
 }
 
@@ -69,4 +75,35 @@ void CMainDlg::CloseDialog(int nVal)
 {
 	DestroyWindow();
 	::PostQuitMessage(nVal);
+}
+
+void CMainDlg::IniWindowsText()
+{
+  CString str;
+  TCHAR moudleName[MAX_PATH];
+  GetModuleFileName(NULL, moudleName, MAX_PATH);
+  str.Format(_T("%s_%d_gdi info"), PathFindFileName(moudleName), GetCurrentProcessId());
+  SetWindowText(str);
+}
+
+void CMainDlg::UpdateList()
+{
+  CGDI gdi;
+  gdi.SetPID(GetCurrentProcessId());
+  gdi.GetProcessGDIInfo();
+  vector<GDI_INFO> gi = gdi.GetGDI();
+  m_list.ResetContent();
+  for (vector<GDI_INFO>::iterator iter = gi.begin(); iter != gi.end(); ++iter)
+  {
+    CString itemString;
+    itemString.Format(_T("%0x  %s"), iter->handle, GetGdiType(iter->handle));
+    int item = m_list.AddString(itemString);
+    m_list.SetItemData(item, (DWORD_PTR)iter->handle);
+  }
+}
+
+void CMainDlg::IniList()
+{
+  m_list.Attach(GetDlgItem(IDC_LIST2));
+  UpdateList();
 }

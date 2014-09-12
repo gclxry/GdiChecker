@@ -37,9 +37,12 @@ public:
 	LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
 	void CloseDialog(int nVal);
+  void IniWindowsText();
+  void UpdateList();
+  void IniList();
 
 
 
 private:
-  CListViewCtrl m_process;
+  CListBox m_list; 
 };
