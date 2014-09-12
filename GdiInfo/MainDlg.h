@@ -23,6 +23,7 @@ public:
 		MESSAGE_HANDLER(WM_INITDIALOG, OnInitDialog)
 		MESSAGE_HANDLER(WM_DESTROY, OnDestroy)
     MESSAGE_HANDLER(WM_DESTROY, OnInject)
+    MSG_WM_PAINT(OnPaint)
 		COMMAND_ID_HANDLER(IDOK, OnOK)
 		COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
     COMMAND_HANDLER(IDC_LIST2, LBN_SELCHANGE, OnSelChange)
@@ -40,14 +41,25 @@ public:
   LRESULT OnInject(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/, BOOL& /*bHandled*/);
 
   LRESULT OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  void OnPaint(CDCHandle dc);
 
 	void CloseDialog(int nVal);
   void IniWindowsText();
   void UpdateList();
   void IniList();
+  void IniPaintRect();
 
+  void ShowGdi(HGDIOBJ gdi);
+  void ShowOBJ_BITMAP(HGDIOBJ gdi);
+  //void ShowOBJ_BRUSH(HGDIOBJ gdi);
+  //void ShowOBJ_DC(HGDIOBJ gdi);
+  //void ShowOBJ_PEN(HGDIOBJ gdi);
+  //void ShowOBJ_REGION(HGDIOBJ gdi);
+  //void ShowOBJ_FONT(HGDIOBJ gdi);
 
 
 private:
   CListBox m_list;
+  CRect m_PaintRect;
+  HGDIOBJ m_gdidHandle;
 };

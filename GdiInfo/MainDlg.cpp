@@ -43,6 +43,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 
   IniWindowsText();
   IniList();
+  IniPaintRect();
 
 	return TRUE;
 }
@@ -131,10 +132,171 @@ LRESULT CMainDlg::OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
 
   int item = m_list.GetCurSel();
   m_list.GetText(item, itemString);
-  //gdiHandle = (HGDIOBJ)m_List.GetItemData(item);
-  //m_gdidHandle = gdiHandle;
-  //InvalidateRect(&m_ShowPanelRect);
-  //UpdateWindow();
-  //ShowGdi(gdiHandle);
+  gdiHandle = (HGDIOBJ)m_list.GetItemData(item);
+  m_gdidHandle = gdiHandle;
+  InvalidateRect(&m_PaintRect);
+  UpdateWindow();
+  ShowGdi(gdiHandle);
   return 0;
+}
+
+void CMainDlg::ShowGdi(HGDIOBJ gdi)
+{
+  DWORD gidType = GetObjectType(gdi);
+  switch (gidType)
+  {
+  case OBJ_BITMAP:
+    ShowOBJ_BITMAP(gdi);
+    break;
+
+  //case OBJ_BRUSH:
+  //  ShowOBJ_BRUSH(gdi);
+  //  break;
+
+  //case OBJ_DC:
+  //case OBJ_MEMDC:
+  //  ShowOBJ_DC(gdi);
+  //  break;
+
+  //case OBJ_PEN:
+  //case OBJ_EXTPEN:
+  //  ShowOBJ_PEN(gdi);
+  //  break;
+
+  //case OBJ_REGION:
+  //  ShowOBJ_REGION(gdi);
+  //  break;
+
+  //case OBJ_FONT:
+  //  ShowOBJ_FONT(gdi);
+  //  break;
+
+  default:
+    break;
+  }
+}
+
+void CMainDlg::ShowOBJ_BITMAP(HGDIOBJ gdi)
+{
+  CBitmap* bitmap;
+  CDC CDCompatible;
+  CDC* pDC = GetDC();
+
+  bitmap = CBitmap::FromHandle((HBITMAP)gdi);
+
+  if (NULL != bitmap)
+  {
+    BITMAP bmp;
+    ZeroMemory(&bmp, sizeof(bmp));
+    bitmap->GetBitmap(&bmp);
+
+    CString gdiInfo;
+    gdiInfo.Format(_T("Width=%ld  Height=%ld  BitsPixel=%u"), bmp.bmWidth, bmp.bmHeight, bmp.bmBitsPixel);
+    pDC->TextOut(m_ShowPanelRect.left, m_ShowPanelRect.top + 5, gdiInfo, gdiInfo.GetLength());
+
+    CDCompatible.CreateCompatibleDC(pDC);
+    CBitmap *oldBitmap = CDCompatible.SelectObject(bitmap);
+
+    pDC->StretchBlt(m_ShowPanelRect.left, m_ShowPanelRect.top + 50, bmp.bmWidth>380?380:bmp.bmWidth, bmp.bmHeight>650?650:bmp.bmHeight, &CDCompatible, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
+    CDCompatible.SelectObject(oldBitmap);
+  }
+  ReleaseDC(pDC);
+}
+//
+//void CMainDlg::ShowOBJ_BRUSH(HGDIOBJ gdi)
+//{
+//  CDC* pDC = GetDC();
+//  CBrush* pOldBrush;
+//  CBrush* brush = CBrush::FromHandle((HBRUSH)gdi);
+//
+//  if (NULL != brush)
+//  {
+//    CRect rect;
+//    rect.left = m_ShowPanelRect.left + 10;
+//    rect.top = m_ShowPanelRect.top + 50;
+//    rect.right = rect.left + 100;
+//    rect.bottom = rect.top + 100;
+//
+//    pOldBrush = pDC->SelectObject(brush);  //ÆôÓÃÐÂ»­Ë¢²¢±£´æ¾É»­Ë¢
+//    pDC->FillRect(rect, brush);            //Ìî³äÇøÓò
+//    pDC->SelectObject(pOldBrush);            //»Ö¸´¾É»­Ë¢
+//  }
+//  ReleaseDC(pDC);
+//}
+//
+//void CMainDlg::ShowOBJ_DC(HGDIOBJ gdi)
+//{
+//  CDC* pDC = GetDC();
+//
+//  CDC* pDCompatible = CDC::FromHandle((HDC)gdi);
+//
+//  if (NULL != pDCompatible)
+//  {
+//    pDC->BitBlt(m_ShowPanelRect.left, m_ShowPanelRect.top, 380, 650, pDCompatible, 0, 0, SRCCOPY);
+//  }	
+//  ReleaseDC(pDC);
+//}
+//
+//
+//void CMainDlg::ShowOBJ_PEN(HGDIOBJ gdi)
+//{
+//  CDC* pDC = GetDC();
+//  CPen* pOldPen;
+//  CPen* pen = CPen::FromHandle((HPEN)gdi);
+//
+//  if (NULL != pen)
+//  {
+//    pOldPen = pDC->SelectObject(pen); 
+//    pDC->MoveTo(m_ShowPanelRect.left, m_ShowPanelRect.top+50);  
+//    pDC->LineTo(m_ShowPanelRect.right - 30, m_ShowPanelRect.top+50);
+//    pDC->SelectObject(pOldPen);
+//  }
+//  ReleaseDC(pDC);
+//}
+//
+//void CMainDlg::ShowOBJ_REGION(HGDIOBJ gdi)
+//{
+//  CDC* pDC = GetDC();
+//  CRgn* rgn = CRgn::FromHandle((HRGN)gdi);
+//
+//  if (NULL != rgn)
+//  {
+//    RECT rect;
+//    rgn->GetRgnBox(&rect);
+//    CString strInfo;
+//    strInfo.Format(_T("left=%d top=%d right=%d bottom=%d"),rect.left, rect.top, rect.right, rect.bottom);
+//    pDC->TextOut(m_ShowPanelRect.left, m_ShowPanelRect.top + 5, strInfo, strInfo.GetLength());
+//  }
+//  ReleaseDC(pDC);
+//}
+//
+//void CMainDlg::ShowOBJ_FONT(HGDIOBJ gdi)
+//{
+//  CDC* pDC = GetDC();
+//  CFont* font = CFont::FromHandle((HFONT)gdi);
+//
+//  if (NULL != font)
+//  {
+//    LOGFONT logFont;
+//    font->GetLogFont(&logFont);
+//    CString strInfo;
+//    strInfo.Format(_T("%s"), logFont.lfFaceName);
+//    CFont* oldFont = (CFont*)pDC->SelectObject(font); 
+//    pDC->TextOut(m_ShowPanelRect.left, m_ShowPanelRect.top + 5, strInfo, strInfo.GetLength());
+//    pDC->SelectObject(oldFont); 
+//  }
+//  ReleaseDC(pDC);
+//}
+
+void CMainDlg::IniPaintRect()
+{
+  m_PaintRect.left = 270;
+  m_PaintRect.top = 15;
+  m_PaintRect.right = 650;
+  m_PaintRect.bottom = 700;
+}
+
+void CMainDlg::OnPaint(CDCHandle dc)
+{
+  ShowGdi(m_gdidHandle);
 }
