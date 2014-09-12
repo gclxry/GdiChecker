@@ -59,17 +59,10 @@ LRESULT CMainDlg::OnDestroy(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam*/,
 	return 0;
 }
 
-LRESULT CMainDlg::OnOK(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
-{
-	// TODO: Add validation code 
-	CloseDialog(wID);
-	return 0;
-}
-
 LRESULT CMainDlg::OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
 {
-	CloseDialog(wID);
-	return 0;
+  CloseDialog(wID);
+  return 0;
 }
 
 void CMainDlg::CloseDialog(int nVal)
@@ -77,6 +70,7 @@ void CMainDlg::CloseDialog(int nVal)
 	//DestroyWindow();
 	//::PostQuitMessage(nVal);
   ShowWindow(SW_HIDE);
+  SetMsgHandled(FALSE);
 }
 
 void CMainDlg::IniWindowsText()
@@ -122,6 +116,7 @@ LRESULT CMainDlg::OnInject(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandl
     }
     //::PostMessage(checkerHWND, WM_INJECT, (WPARAM)m_hWnd, 1);
   }
+  SetMsgHandled(TRUE);
   return 0;
 }
 
@@ -137,6 +132,7 @@ LRESULT CMainDlg::OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl
   InvalidateRect(&m_PaintRect);
   UpdateWindow();
   ShowGdi(gdiHandle);
+  SetMsgHandled(TRUE);
   return 0;
 }
 
@@ -178,29 +174,27 @@ void CMainDlg::ShowGdi(HGDIOBJ gdi)
 
 void CMainDlg::ShowOBJ_BITMAP(HGDIOBJ gdi)
 {
-  CBitmap* bitmap;
-  CDC CDCompatible;
-  CDC* pDC = GetDC();
+  
+  CDC compatible_dc;
+  CClientDC dc(m_hWnd);
+  CBitmapHandle bitmap((HBITMAP)gdi);
 
-  bitmap = CBitmap::FromHandle((HBITMAP)gdi);
-
-  if (NULL != bitmap)
+  if (NULL != bitmap.m_hBitmap)
   {
     BITMAP bmp;
     ZeroMemory(&bmp, sizeof(bmp));
-    bitmap->GetBitmap(&bmp);
+    bitmap.GetBitmap(&bmp);
 
     CString gdiInfo;
     gdiInfo.Format(_T("Width=%ld  Height=%ld  BitsPixel=%u"), bmp.bmWidth, bmp.bmHeight, bmp.bmBitsPixel);
-    pDC->TextOut(m_ShowPanelRect.left, m_ShowPanelRect.top + 5, gdiInfo, gdiInfo.GetLength());
+    dc.TextOut(m_PaintRect.left, m_PaintRect.top + 5, gdiInfo, gdiInfo.GetLength());
 
-    CDCompatible.CreateCompatibleDC(pDC);
-    CBitmap *oldBitmap = CDCompatible.SelectObject(bitmap);
+    compatible_dc.CreateCompatibleDC(dc);
+    CBitmap old_bitmap = compatible_dc.SelectBitmap(bitmap);
 
-    pDC->StretchBlt(m_ShowPanelRect.left, m_ShowPanelRect.top + 50, bmp.bmWidth>380?380:bmp.bmWidth, bmp.bmHeight>650?650:bmp.bmHeight, &CDCompatible, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
-    CDCompatible.SelectObject(oldBitmap);
+    dc.StretchBlt(m_PaintRect.left, m_PaintRect.top + 50, bmp.bmWidth>500?500:bmp.bmWidth, bmp.bmHeight>380?380:bmp.bmHeight, compatible_dc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
+    compatible_dc.SelectBitmap(old_bitmap);
   }
-  ReleaseDC(pDC);
 }
 //
 //void CMainDlg::ShowOBJ_BRUSH(HGDIOBJ gdi)
@@ -290,13 +284,14 @@ void CMainDlg::ShowOBJ_BITMAP(HGDIOBJ gdi)
 
 void CMainDlg::IniPaintRect()
 {
-  m_PaintRect.left = 270;
+  m_PaintRect.left = 250;
   m_PaintRect.top = 15;
-  m_PaintRect.right = 650;
-  m_PaintRect.bottom = 700;
+  m_PaintRect.right = m_PaintRect.left + 500;
+  m_PaintRect.bottom = m_PaintRect.top + 380;
 }
 
 void CMainDlg::OnPaint(CDCHandle dc)
 {
   ShowGdi(m_gdidHandle);
+  SetMsgHandled(FALSE);
 }
