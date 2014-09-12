@@ -11,6 +11,8 @@
 // Windows м╥нд╪Ч:
 #include <windows.h>
 
+#define _WTL_USE_CSTRING
+
 #include <atlbase.h>
 #include <atlapp.h>
 

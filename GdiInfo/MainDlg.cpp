@@ -73,8 +73,9 @@ LRESULT CMainDlg::OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOO
 
 void CMainDlg::CloseDialog(int nVal)
 {
-	DestroyWindow();
-	::PostQuitMessage(nVal);
+	//DestroyWindow();
+	//::PostQuitMessage(nVal);
+  ShowWindow(SW_HIDE);
 }
 
 void CMainDlg::IniWindowsText()
@@ -106,4 +107,34 @@ void CMainDlg::IniList()
 {
   m_list.Attach(GetDlgItem(IDC_LIST2));
   UpdateList();
+}
+
+LRESULT CMainDlg::OnInject(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandled)
+{
+  HWND source_hwnd = (HWND)wParam;
+  if (NULL != source_hwnd)
+  {
+    // »½ÐÑ´°¿Ú
+    if (1 == lParam)
+    {
+      ShowWindow(SW_SHOWNA);
+    }
+    //::PostMessage(checkerHWND, WM_INJECT, (WPARAM)m_hWnd, 1);
+  }
+  return 0;
+}
+
+LRESULT CMainDlg::OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+  CString itemString;
+  HGDIOBJ gdiHandle;
+
+  int item = m_list.GetCurSel();
+  m_list.GetText(item, itemString);
+  //gdiHandle = (HGDIOBJ)m_List.GetItemData(item);
+  //m_gdidHandle = gdiHandle;
+  //InvalidateRect(&m_ShowPanelRect);
+  //UpdateWindow();
+  //ShowGdi(gdiHandle);
+  return 0;
 }
