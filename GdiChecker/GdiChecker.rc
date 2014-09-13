@@ -31,6 +31,16 @@ BEGIN
     MENUITEM "details",                     ID_DETAILS
 END
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// BIN
+//
+
+IDR_BIN_GDI_INFO        BIN                     "GdiInfo.dll"
+IDR_BIN_GDI_INFO64      BIN                     "GdiInfo64.dll"
+IDR_BIN_INJECT_PROXY    BIN                     "InjectProxy.exe"
+IDR_BIN_INJECT_PROXY64  BIN                     "InjectProxy64.exe"
 #endif    // 中文(简体，中国) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -159,8 +169,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 1,1,9,13
+ PRODUCTVERSION 1,1,9,13
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -173,15 +183,16 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
+            VALUE "CompanyName", "www.gclxry.com"
             VALUE "FileDescription", "GdiChecker Module"
-            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "FileVersion", "1.1.9.13"
             VALUE "InternalName", "GdiChecker"
-            VALUE "LegalCopyright", "Copyright 2014"
+            VALUE "LegalCopyright", "Copyright 2014 www.gclxry.com"
             VALUE "OriginalFilename", "GdiChecker.exe"
             VALUE "ProductName", "GdiChecker Module"
-            VALUE "ProductVersion", "1, 0, 0, 1"
+            VALUE "ProductVersion", "1.1.9.13"
         END
     END
     BLOCK "VarFileInfo"

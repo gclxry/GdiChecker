@@ -63,5 +63,12 @@
     <None Include="res\GdiChecker.ico">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="res\bin1.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="GdiInfo.dll" />
+    <None Include="GdiInfo64.dll" />
+    <None Include="InjectProxy.exe" />
+    <None Include="InjectProxy64.exe" />
   </ItemGroup>
 </Project>

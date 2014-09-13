@@ -85,10 +85,11 @@ int _tmain(int argc, _TCHAR* argv[])
 {
   if (3 == argc)
   {
+    _tprintf(_T("%s %s\n"), argv[1], argv[2]);
     EnableDebugPrivilege();
     if (InjectProcess(argv[1], _wtoi(argv[2])))
     {
-      _tprintf(_T("inject sucessed!"));
+      _tprintf(_T("inject sucessed!\n"));
       NotifyGdiChecker();
       return 1;
     }

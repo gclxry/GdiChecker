@@ -224,6 +224,11 @@
     <ResourceCompile Include="GdiChecker.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GdiInfo.dll" />
+    <None Include="GdiInfo64.dll" />
+    <None Include="InjectProxy.exe" />
+    <None Include="InjectProxy64.exe" />
+    <None Include="res\bin1.bin" />
     <None Include="res\GdiChecker.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

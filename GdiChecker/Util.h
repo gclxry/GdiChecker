@@ -19,3 +19,4 @@ void CreateProcessWithCmd(CString sProcesName, CString sCmd);
 void IniCurrentDirectory();
 BOOL CreatePath(LPCTSTR pszPath);
 CString GetTempPath();
+BOOL UseCustomResource(LPCTSTR fileName, int nResourceName);

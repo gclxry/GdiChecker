@@ -47,6 +47,7 @@ public:
 
   void IniListCtrl();
   void UpdateListCtrl();
+  void IniResource();
 
 
 private:

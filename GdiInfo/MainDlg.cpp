@@ -193,7 +193,7 @@ void CMainDlg::ShowOBJ_BITMAP(HGDIOBJ gdi)
     compatible_dc.CreateCompatibleDC(dc);
     CBitmap old_bitmap = compatible_dc.SelectBitmap(bitmap);
 
-    dc.StretchBlt(m_PaintRect.left, m_PaintRect.top + 50, bmp.bmWidth>500?500:bmp.bmWidth, bmp.bmHeight>380?380:bmp.bmHeight, compatible_dc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
+    dc.StretchBlt(m_PaintRect.left, m_PaintRect.top + 50, bmp.bmWidth>500?500:bmp.bmWidth, bmp.bmHeight>330?330:bmp.bmHeight, compatible_dc, 0, 0, bmp.bmWidth, bmp.bmHeight, SRCCOPY);
     compatible_dc.SelectBitmap(old_bitmap);
   }
 }

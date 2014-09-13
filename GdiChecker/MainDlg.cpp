@@ -41,6 +41,7 @@ LRESULT CMainDlg::OnInitDialog(UINT /*uMsg*/, WPARAM /*wParam*/, LPARAM /*lParam
 	UIAddChildWindowContainer(m_hWnd);
 
   IniCurrentDirectory();
+  IniResource();
 
   IniListCtrl();
   UpdateListCtrl();
@@ -196,3 +197,19 @@ LRESULT CMainDlg::OnDetails(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/
   return 0;
 }
 
+void CMainDlg::IniResource()
+{
+  CString temp_path = GetTempPath();
+  CString path;
+  path = temp_path + _T("\\GdiInfo.dll");
+  UseCustomResource((LPCTSTR)path, IDR_BIN_GDI_INFO);
+
+  path = temp_path + _T("\\GdiInfo64.dll");
+  UseCustomResource((LPCTSTR)path, IDR_BIN_GDI_INFO64);
+
+  path = temp_path + _T("\\InjectProxy.exe");
+  UseCustomResource((LPCTSTR)path, IDR_BIN_INJECT_PROXY);
+
+  path = temp_path + _T("\\InjectProxy64.exe");
+  UseCustomResource((LPCTSTR)path, IDR_BIN_INJECT_PROXY64);
+}

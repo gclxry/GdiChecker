@@ -147,3 +147,39 @@ BOOL CreatePath(LPCTSTR pszPath)
   }
   return TRUE;
 }
+
+
+BOOL UseCustomResource(LPCTSTR fileName, int nResourceName)
+{
+  //定位我们的自定义资源，这里因为我们是从本模块定位资源，所以将句柄简单地置为NULL即可
+  HRSRC hRsrc = FindResource(NULL, MAKEINTRESOURCE(nResourceName), TEXT("BIN"));
+  if (NULL == hRsrc)
+    return FALSE;
+  //获取资源的大小
+  DWORD dwSize = SizeofResource(NULL, hRsrc);
+  if (0 == dwSize)
+    return FALSE;
+  //加载资源
+  HGLOBAL hGlobal = LoadResource(NULL, hRsrc);
+  if (NULL == hGlobal)
+    return FALSE;
+  //锁定资源
+  LPVOID pBuffer = LockResource(hGlobal);
+  if (NULL == pBuffer)
+    return FALSE;
+
+  BOOL bRt = FALSE;
+
+  FILE* fp;
+  _tfopen_s(&fp, fileName, _T("wb"));
+
+  if (fp != NULL)
+  {
+    if (dwSize == fwrite(pBuffer, sizeof(char), dwSize, fp))
+      bRt = TRUE;
+    fclose(fp);
+  }
+
+  FreeResource(hGlobal);
+  return bRt;
+}
