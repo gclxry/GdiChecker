@@ -25,7 +25,8 @@ public:
     COMMAND_ID_HANDLER(IDCANCEL, OnCancel)
     MESSAGE_HANDLER(WM_INJECT, OnInject)
     MSG_WM_PAINT(OnPaint)
-    COMMAND_HANDLER(IDC_LIST2, LBN_SELCHANGE, OnSelChange)
+    COMMAND_HANDLER(IDC_LIST2, LBN_SELCHANGE, OnSelChange)\
+    COMMAND_ID_HANDLER(ID_REFRESH, OnRefresh)
 	END_MSG_MAP()
 
 // Handler prototypes (uncomment arguments if needed):
@@ -39,6 +40,7 @@ public:
   LRESULT OnCancel(WORD /*wNotifyCode*/, WORD wID, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
 
   LRESULT OnSelChange(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
+  LRESULT OnRefresh(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/);
   void OnPaint(CDCHandle dc);
 
 	void CloseDialog(int nVal);

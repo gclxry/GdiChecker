@@ -16,6 +16,7 @@ unsigned _stdcall ThreadProc(void* param)
   }
 
   dlgMain.ShowWindow(SW_SHOW);
+  SetForegroundWindow(dlgMain.m_hWnd);
 
   int nRet = theLoop.Run();
   return nRet;

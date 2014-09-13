@@ -113,6 +113,7 @@ LRESULT CMainDlg::OnInject(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHandl
     if (1 == lParam)
     {
       ShowWindow(SW_SHOWNA);
+      SetForegroundWindow(m_hWnd);
     }
     //::PostMessage(checkerHWND, WM_INJECT, (WPARAM)m_hWnd, 1);
   }
@@ -286,4 +287,21 @@ void CMainDlg::OnPaint(CDCHandle dc)
 {
   ShowGdi(m_gdidHandle);
   SetMsgHandled(FALSE);
+}
+
+LRESULT CMainDlg::OnRefresh(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+  CGDI gdi;
+  gdi.SetPID(GetCurrentProcessId());
+  gdi.GetProcessGDIInfo();
+  vector<GDI_INFO> gi = gdi.GetGDI();
+  m_list.ResetContent();
+  for (vector<GDI_INFO>::iterator iter = gi.begin(); iter != gi.end(); ++iter)
+  {
+    CString itemString;
+    itemString.Format(_T("%0x  %s"), iter->handle, GetGdiType(iter->handle));
+    int item = m_list.AddString(itemString);
+    m_list.SetItemData(item, (DWORD_PTR)iter->handle);
+  }
+  return 0;
 }
