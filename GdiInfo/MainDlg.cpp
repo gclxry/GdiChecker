@@ -149,10 +149,10 @@ void CMainDlg::ShowGdi(HGDIOBJ gdi)
   //  ShowOBJ_BRUSH(gdi);
   //  break;
 
-  //case OBJ_DC:
-  //case OBJ_MEMDC:
-  //  ShowOBJ_DC(gdi);
-  //  break;
+  case OBJ_DC:
+  case OBJ_MEMDC:
+    ShowOBJ_DC(gdi);
+    break;
 
   //case OBJ_PEN:
   //case OBJ_EXTPEN:
@@ -218,19 +218,19 @@ void CMainDlg::ShowOBJ_BITMAP(HGDIOBJ gdi)
 //  ReleaseDC(pDC);
 //}
 //
-//void CMainDlg::ShowOBJ_DC(HGDIOBJ gdi)
-//{
-//  CDC* pDC = GetDC();
-//
-//  CDC* pDCompatible = CDC::FromHandle((HDC)gdi);
-//
-//  if (NULL != pDCompatible)
-//  {
-//    pDC->BitBlt(m_ShowPanelRect.left, m_ShowPanelRect.top, 380, 650, pDCompatible, 0, 0, SRCCOPY);
-//  }	
-//  ReleaseDC(pDC);
-//}
-//
+void CMainDlg::ShowOBJ_DC(HGDIOBJ gdi)
+{
+  
+  CClientDC dc(m_hWnd);
+  CDCHandle compatible_dc((HDC)gdi);
+
+  if (NULL != compatible_dc.m_hDC)
+  {
+    CString gdiInfo;
+    dc.BitBlt(m_PaintRect.left, m_PaintRect.top, 500, 380, compatible_dc, 0, 0, SRCCOPY);
+  }	
+}
+
 //
 //void CMainDlg::ShowOBJ_PEN(HGDIOBJ gdi)
 //{
