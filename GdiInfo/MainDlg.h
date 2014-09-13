@@ -49,11 +49,11 @@ public:
 
   void ShowGdi(HGDIOBJ gdi);
   void ShowOBJ_BITMAP(HGDIOBJ gdi);
-  //void ShowOBJ_BRUSH(HGDIOBJ gdi);
+  void ShowOBJ_BRUSH(HGDIOBJ gdi);
   void ShowOBJ_DC(HGDIOBJ gdi);
-  //void ShowOBJ_PEN(HGDIOBJ gdi);
-  //void ShowOBJ_REGION(HGDIOBJ gdi);
-  //void ShowOBJ_FONT(HGDIOBJ gdi);
+  void ShowOBJ_PEN(HGDIOBJ gdi);
+  void ShowOBJ_REGION(HGDIOBJ gdi);
+  void ShowOBJ_FONT(HGDIOBJ gdi);
 
 
 private:

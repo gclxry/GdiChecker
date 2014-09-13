@@ -112,7 +112,7 @@ void CMainDlg::IniListCtrl()
   m_process.InsertColumn(8, _T("font"), LVCFMT_LEFT, 50);
   m_process.InsertColumn(9, _T("brush"), LVCFMT_LEFT, 50);
   m_process.InsertColumn(10, _T("pen"), LVCFMT_LEFT, 50);
-  m_process.InsertColumn(11, _T("extPen"), LVCFMT_LEFT, 60);
+  m_process.InsertColumn(11, _T("extpen"), LVCFMT_LEFT, 60);
   m_process.InsertColumn(12, _T("other"), LVCFMT_LEFT, 50);
 }
 

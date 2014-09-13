@@ -145,27 +145,27 @@ void CMainDlg::ShowGdi(HGDIOBJ gdi)
     ShowOBJ_BITMAP(gdi);
     break;
 
-  //case OBJ_BRUSH:
-  //  ShowOBJ_BRUSH(gdi);
-  //  break;
+  case OBJ_BRUSH:
+    ShowOBJ_BRUSH(gdi);
+    break;
 
   case OBJ_DC:
   case OBJ_MEMDC:
     ShowOBJ_DC(gdi);
     break;
 
-  //case OBJ_PEN:
-  //case OBJ_EXTPEN:
-  //  ShowOBJ_PEN(gdi);
-  //  break;
+  case OBJ_PEN:
+  case OBJ_EXTPEN:
+    ShowOBJ_PEN(gdi);
+    break;
 
-  //case OBJ_REGION:
-  //  ShowOBJ_REGION(gdi);
-  //  break;
+  case OBJ_REGION:
+    ShowOBJ_REGION(gdi);
+    break;
 
-  //case OBJ_FONT:
-  //  ShowOBJ_FONT(gdi);
-  //  break;
+  case OBJ_FONT:
+    ShowOBJ_FONT(gdi);
+    break;
 
   default:
     break;
@@ -196,28 +196,26 @@ void CMainDlg::ShowOBJ_BITMAP(HGDIOBJ gdi)
     compatible_dc.SelectBitmap(old_bitmap);
   }
 }
-//
-//void CMainDlg::ShowOBJ_BRUSH(HGDIOBJ gdi)
-//{
-//  CDC* pDC = GetDC();
-//  CBrush* pOldBrush;
-//  CBrush* brush = CBrush::FromHandle((HBRUSH)gdi);
-//
-//  if (NULL != brush)
-//  {
-//    CRect rect;
-//    rect.left = m_ShowPanelRect.left + 10;
-//    rect.top = m_ShowPanelRect.top + 50;
-//    rect.right = rect.left + 100;
-//    rect.bottom = rect.top + 100;
-//
-//    pOldBrush = pDC->SelectObject(brush);  //ÆôÓÃÐÂ»­Ë¢²¢±£´æ¾É»­Ë¢
-//    pDC->FillRect(rect, brush);            //Ìî³äÇøÓò
-//    pDC->SelectObject(pOldBrush);            //»Ö¸´¾É»­Ë¢
-//  }
-//  ReleaseDC(pDC);
-//}
-//
+
+void CMainDlg::ShowOBJ_BRUSH(HGDIOBJ gdi)
+{
+  CClientDC dc(m_hWnd);
+  CBrushHandle brush((HBRUSH)gdi);
+
+  if (NULL != brush.m_hBrush)
+  {
+    CRect rect;
+    rect.left = m_PaintRect.left + 10;
+    rect.top = m_PaintRect.top + 50;
+    rect.right = rect.left + 100;
+    rect.bottom = rect.top + 100;
+
+    CBrush old_brush = dc.SelectBrush(brush);
+    dc.FillRect(rect, brush);
+    dc.SelectBrush(old_brush);
+  }
+}
+
 void CMainDlg::ShowOBJ_DC(HGDIOBJ gdi)
 {
   
@@ -231,56 +229,50 @@ void CMainDlg::ShowOBJ_DC(HGDIOBJ gdi)
   }	
 }
 
-//
-//void CMainDlg::ShowOBJ_PEN(HGDIOBJ gdi)
-//{
-//  CDC* pDC = GetDC();
-//  CPen* pOldPen;
-//  CPen* pen = CPen::FromHandle((HPEN)gdi);
-//
-//  if (NULL != pen)
-//  {
-//    pOldPen = pDC->SelectObject(pen); 
-//    pDC->MoveTo(m_ShowPanelRect.left, m_ShowPanelRect.top+50);  
-//    pDC->LineTo(m_ShowPanelRect.right - 30, m_ShowPanelRect.top+50);
-//    pDC->SelectObject(pOldPen);
-//  }
-//  ReleaseDC(pDC);
-//}
-//
-//void CMainDlg::ShowOBJ_REGION(HGDIOBJ gdi)
-//{
-//  CDC* pDC = GetDC();
-//  CRgn* rgn = CRgn::FromHandle((HRGN)gdi);
-//
-//  if (NULL != rgn)
-//  {
-//    RECT rect;
-//    rgn->GetRgnBox(&rect);
-//    CString strInfo;
-//    strInfo.Format(_T("left=%d top=%d right=%d bottom=%d"),rect.left, rect.top, rect.right, rect.bottom);
-//    pDC->TextOut(m_ShowPanelRect.left, m_ShowPanelRect.top + 5, strInfo, strInfo.GetLength());
-//  }
-//  ReleaseDC(pDC);
-//}
-//
-//void CMainDlg::ShowOBJ_FONT(HGDIOBJ gdi)
-//{
-//  CDC* pDC = GetDC();
-//  CFont* font = CFont::FromHandle((HFONT)gdi);
-//
-//  if (NULL != font)
-//  {
-//    LOGFONT logFont;
-//    font->GetLogFont(&logFont);
-//    CString strInfo;
-//    strInfo.Format(_T("%s"), logFont.lfFaceName);
-//    CFont* oldFont = (CFont*)pDC->SelectObject(font); 
-//    pDC->TextOut(m_ShowPanelRect.left, m_ShowPanelRect.top + 5, strInfo, strInfo.GetLength());
-//    pDC->SelectObject(oldFont); 
-//  }
-//  ReleaseDC(pDC);
-//}
+
+void CMainDlg::ShowOBJ_PEN(HGDIOBJ gdi)
+{
+  CClientDC dc(m_hWnd);
+  CPenHandle pen((HPEN)gdi);
+
+  if (NULL != pen.m_hPen)
+  {
+    CPen old_pen = dc.SelectPen(pen); 
+    dc.MoveTo(m_PaintRect.left, m_PaintRect.top+50);  
+    dc.LineTo(m_PaintRect.right - 30, m_PaintRect.top+50);
+    dc.SelectPen(old_pen);
+  }
+}
+
+void CMainDlg::ShowOBJ_REGION(HGDIOBJ gdi)
+{
+  CClientDC dc(m_hWnd);
+  CRgnHandle rgn((HRGN)gdi);
+
+  if (NULL != rgn.m_hRgn)
+  {
+    RECT rect;
+    rgn.GetRgnBox(&rect);
+    CString strInfo;
+    strInfo.Format(_T("left=%d top=%d right=%d bottom=%d"),rect.left, rect.top, rect.right, rect.bottom);
+    dc.TextOut(m_PaintRect.left, m_PaintRect.top + 5, strInfo, strInfo.GetLength());
+  }
+}
+
+void CMainDlg::ShowOBJ_FONT(HGDIOBJ gdi)
+{
+  CClientDC dc(m_hWnd);
+  CFontHandle font((HFONT)gdi);
+
+  if (NULL != font.m_hFont)
+  {
+    LOGFONT logFont;
+    font.GetLogFont(&logFont);
+    CString strInfo;
+    strInfo.Format(_T("%s"), logFont.lfFaceName);
+   dc.TextOut(m_PaintRect.left, m_PaintRect.top + 5, strInfo, strInfo.GetLength());
+  }
+}
 
 void CMainDlg::IniPaintRect()
 {
